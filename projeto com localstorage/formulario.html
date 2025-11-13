@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário Espacial</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="formulario.html">Formulário</a>
+    </nav>
+
+    <!-- Container do formulário -->
+    <div class="container">
+        <h1>🪐 Compartilhe sua Curiosidade</h1>
+        <p>Digite algo curioso que você quer registrar sobre o espaço!</p>
+
+        <form id="formularioEspaco">
+            <label for="nome">Seu Nome:</label>
+            <input type="text" id="nome" placeholder="Digite seu nome" required>
+
+            <label for="curiosidade">Curiosidade:</label>
+            <textarea id="curiosidade" placeholder="Digite sua curiosidade" rows="4" required></textarea>
+
+            <button type="submit">Salvar</button>
+        </form>
+
+        <h2>Curiosidades Salvas:</h2>
+        <ul id="listaCuriosidades"></ul>
+    </div>
+
+    <script>
+        const form = document.getElementById('formularioEspaco');
+        const lista = document.getElementById('listaCuriosidades');
+
+        // Carregar curiosidades salvas
+        window.onload = () => {
+            const dados = JSON.parse(localStorage.getItem('curiosidades')) || [];
+            dados.forEach(item => adicionarLista(item));
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const curiosidade = document.getElementById('curiosidade').value;
+            const item = { nome, curiosidade };
+
+            // Salvar no Local Storage
+            const dados = JSON.parse(localStorage.getItem('curiosidades')) || [];
+            dados.push(item);
+            localStorage.setItem('curiosidades', JSON.stringify(dados));
+
+            adicionarLista(item);
+            form.reset();
+        });
+
+        function adicionarLista(item) {
+            const li = document.createElement('li');
+            li.textContent = `${item.nome} disse: "${item.curiosidade}"`;
+            lista.appendChild(li);
+        }
+    </script>
+</body>
+</html>
